@@ -7,12 +7,14 @@ public class Car {
     private String brand;
     private CarType carType;
     private String vin;
+    private boolean isAvailable;
 
     public Car(String model, String brand, CarType carType, String vin) {
         this.model = model;
         this.brand = brand;
         this.carType = carType;
         this.vin = vin;
+        this.isAvailable = true;
     }
 
     public CarType getCarType() {
@@ -39,6 +41,13 @@ public class Car {
         this.brand = brand;
     }
 
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
 
     public String getVin() {
         return vin;

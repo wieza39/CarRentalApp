@@ -2,11 +2,13 @@ package com.rentcar.rentapp.model;
 
 
 public class Client {
+    //private static final AtomicInteger count = new AtomicInteger(0);
     private int id;
     private String name;
 
     public Client(int id, String name) {
         this.id = id;
+    //    this.id = count.incrementAndGet();
         this.name = name;
     }
 

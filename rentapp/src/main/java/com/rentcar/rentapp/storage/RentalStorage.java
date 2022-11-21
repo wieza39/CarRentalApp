@@ -22,12 +22,9 @@ public class RentalStorage {
         return rentalStorage;
     }
 
-//    public boolean checkCarAvalability(Car car){
-//        if(rentalStorage.contains(car)){
-//            return true;
-//        }else
-//            return false;
-//    }
+    public boolean checkCarAvalability(Car car){
+       return car.isAvailable();
+    }
 
 
     public Rental addRental(Client client, Car car){
@@ -35,6 +32,8 @@ public class RentalStorage {
         String clientName = client.getName();
 
         Rental rental = new Rental(new Client(clientId, clientName), car);
+        
+        car.setAvailable(false);
         rentalStorage.add(rental);
         return rental;
 

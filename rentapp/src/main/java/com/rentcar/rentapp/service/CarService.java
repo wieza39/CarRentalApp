@@ -34,10 +34,10 @@ public class CarService {
     }
 
     public Rental rentCar(Client client, String vin) {
-
         Car car = garage.getCarByVin(vin);
+        boolean availability = rentalStorage.checkCarAvalability(car);
 
-        if (car != null) {
+        if (car != null && availability) {
             Rental rental = rentalStorage.addRental(client, car);
 
             return rental;
