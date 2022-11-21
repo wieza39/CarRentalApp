@@ -22,12 +22,7 @@ public class Garage {
     }
 
     public Car getCarByVin(String vin){
-        for (Car car : carStorage){
-            if(car.getVin() == vin){
-                return car;
-            }
-        }
-        return null;
+        return carStorage.stream().filter(car -> car.getVin() == vin).findFirst().orElse(null);
     }
 
 }
