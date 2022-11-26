@@ -1,9 +1,12 @@
 package com.rentcar.rentapp;
 
 import com.rentcar.rentapp.model.Client;
+import com.rentcar.rentapp.model.RentalInfo;
 import com.rentcar.rentapp.service.CarService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class RentappApplication {
@@ -13,9 +16,8 @@ public class RentappApplication {
 	public RentappApplication(CarService carService){
 		this.carService = carService;
 		carService.addCar("Swift", "Suzuki", CarType.STANDARD, "VIN12345");
-		carService.rentCar(new Client(2, "name"), "VIN12345");
-		System.out.println(carService.getAllCars());
-		System.out.println(carService.getAllRentals());
+		RentalInfo rentalInfo = carService.rentCar(new Client(2, "name"), "VIN12345", LocalDate.of(2022, 9, 20), LocalDate.of(2022, 9, 22));
+		System.out.println(rentalInfo);
 
 	}
 
