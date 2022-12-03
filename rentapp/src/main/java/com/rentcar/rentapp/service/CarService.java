@@ -27,8 +27,8 @@ public class CarService {
         this.rentalStorage = rentalStorage;
     }
 
-    public void addCar(String model, String brand, CarType type, String vin) {
-        garage.addToStorage(model, brand, type, vin);
+    public void addCar(Car car) {
+        garage.addToStorage(car);
     }
 
     public List<Car> getAllCars() {

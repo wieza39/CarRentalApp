@@ -12,8 +12,7 @@ public class Garage {
 
     private List<Car> carStorage = new ArrayList<>();
 
-    public void addToStorage(String model, String brand, CarType type, String vin){
-        Car car = new Car(model, brand, type, vin);
+    public void addToStorage(Car car){
         carStorage.add(car);
     }
 
