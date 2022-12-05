@@ -12,7 +12,7 @@ public class Garage {
 
     private List<Car> carStorage = new ArrayList<>();
 
-    public void addToStorage(Car car){
+    public void addToStorage(Car car) {
         carStorage.add(car);
     }
 
@@ -20,7 +20,7 @@ public class Garage {
         return carStorage;
     }
 
-    public Car getCarByVin(String vin){
+    public Car getCarByVin(String vin) {
         return carStorage.stream().filter(car -> car.getVin() == vin).findFirst().orElse(null);
     }
 

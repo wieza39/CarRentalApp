@@ -7,6 +7,7 @@ import com.rentcar.rentapp.model.RentalInfo;
 import com.rentcar.rentapp.storage.Garage;
 import com.rentcar.rentapp.model.Car;
 import com.rentcar.rentapp.storage.RentalStorage;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -57,14 +58,19 @@ public class CarService {
     public long calculateDays(LocalDate startDate, LocalDate endDate){
         return DAYS.between(startDate, endDate);
     }
+
+    public double carPrice(Car car, LocalDate startDate, LocalDate endDate, double price) {
+        return price * checkPriceRate(car) * calculateDays(startDate, endDate);
+    }
+
     public RentalInfo rentCar(Client client, String vin, LocalDate startDate, LocalDate endDate) {
         Car car = garage.getCarByVin(vin);
         boolean availability = rentalStorage.checkCarAvalability(car);
 
         //price calculation
-        double carPrice = price * checkPriceRate(car) * calculateDays(startDate, endDate);
+        double finalPrice = carPrice(car, startDate, endDate, price);
 
-        RentalInfo rentalInfo = new RentalInfo(carPrice, startDate, endDate);
+        RentalInfo rentalInfo = new RentalInfo(finalPrice, startDate, endDate);
 
         if (availability) {
             rentalStorage.addRental(client, car);

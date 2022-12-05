@@ -1,6 +1,7 @@
 package com.rentcar.rentapp.model;
 
 import com.rentcar.rentapp.CarType;
+import org.springframework.lang.NonNull;
 
 public class Car {
     private String model;
@@ -9,7 +10,7 @@ public class Car {
     private String vin;
     private boolean isAvailable;
 
-    public Car(String model, String brand, CarType carType, String vin) {
+    public Car(String model, String brand, CarType carType, @NonNull String vin) {
         this.model = model;
         this.brand = brand;
         this.carType = carType;
