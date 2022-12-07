@@ -7,8 +7,12 @@ import com.rentcar.rentapp.storage.Garage;
 import com.rentcar.rentapp.storage.RentalStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,19 +28,6 @@ class CarServiceTest {
         this.carService = new CarService(garage, rentalStorage);
     }
 
-/**
-    Brak samochodu w CarStorage - done
-
-    Samochód już wynajęty przez kogoś innego - done
-
-    Data startDate jest późniejsza niż endDate - naprawić implementacje zeby test przechodzil - done
-
-    Jaka jest cena wynajmu samochodu PREMIUM - done
-
-    Jaka jest cena wynajmu samochodu STANDARD - done
-
-    Co się stanie jeżeli vin będzie nullem - naprawić implementacje zeby test przechodzil - done
- */
 
     @Test
     void checkIfStorageIsEmpty() {
@@ -57,40 +48,67 @@ class CarServiceTest {
     }
 
     @Test
-    void shouldReturnPositiveAmountOfDays() {
-        //GIVEN
+    void shouldReturnAmountOfDays() {
         LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.of(2022, 1, 3);
 
-        //WHEN
         long daysCalculation = carService.calculateDays(startDate, endDate);
 
-        //THEN
-        assertThat(daysCalculation).isGreaterThan(0);
+        assertThat(daysCalculation).isEqualTo(2);
     }
 
     @Test
-    void checkPremiumPrice() {
-        Car car = new Car("testModel", "testBrand", CarType.PREMIUM, "VIN12345");
+    void shouldOperateExceptionForNegativeValue() {
+        LocalDate startDate = LocalDate.of(2022, 1, 2);
+        LocalDate endDate = LocalDate.of(2022, 1, 1);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            carService.calculateDays(startDate, endDate);
+        });
+    }
+
+//    @Test
+//    void checkPremiumPrice() {
+//        Car car = new Car("testModel", "testBrand", CarType.PREMIUM, "VIN12345");
+//        LocalDate startDate = LocalDate.of(2022, 1, 1);
+//        LocalDate endDate = LocalDate.of(2022, 1, 2);
+//        double basePrice = 200;
+//
+//        double finalPrice = carService.carPrice(car, startDate, endDate, basePrice);
+//
+//        assertThat(finalPrice).isEqualTo(300);
+//    }
+//
+//    @Test
+//    void checkStandardPrice() {
+//        Car car = new Car("testModel", "testBrand", CarType.STANDARD, "VIN12345");
+//        LocalDate startDate = LocalDate.of(2022, 1, 1);
+//        LocalDate endDate = LocalDate.of(2022, 1, 2);
+//        double basePrice = 200;
+//
+//        double finalPrice = carService.carPrice(car, startDate, endDate, basePrice);
+//
+//        assertThat(finalPrice).isEqualTo(200);
+//    }
+
+    @ParameterizedTest
+    @MethodSource("provideParametersForCheckPrice")
+    void checkPrice(CarType carType, int price) {
+        Car car = new Car("testModel", "testBrand", carType, "VIN12345");
         LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.of(2022, 1, 2);
         double basePrice = 200;
 
         double finalPrice = carService.carPrice(car, startDate, endDate, basePrice);
 
-        assertThat(finalPrice).isEqualTo(300);
+        assertThat(finalPrice).isEqualTo(price);
     }
 
-    @Test
-    void checkStandardPrice() {
-        Car car = new Car("testModel", "testBrand", CarType.STANDARD, "VIN12345");
-        LocalDate startDate = LocalDate.of(2022, 1, 1);
-        LocalDate endDate = LocalDate.of(2022, 1, 2);
-        double basePrice = 200;
-
-        double finalPrice = carService.carPrice(car, startDate, endDate, basePrice);
-
-        assertThat(finalPrice).isEqualTo(200);
+    private static Stream<Arguments> provideParametersForCheckPrice() {
+        return Stream.of(
+                Arguments.of(CarType.STANDARD, 200),
+                Arguments.of(CarType.PREMIUM, 300)
+                );
     }
 
     @Test
@@ -111,7 +129,7 @@ class CarServiceTest {
 
         Car car2 = garage.getCarByVin(vinTest);
 
-        assertThat(car2).isEqualTo(car);
+        assertThat(car2).isNotNull();
     }
 
 

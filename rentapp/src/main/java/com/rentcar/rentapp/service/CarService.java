@@ -55,8 +55,12 @@ public class CarService {
         }
     }
 
-    public long calculateDays(LocalDate startDate, LocalDate endDate){
-        return DAYS.between(startDate, endDate);
+    public long calculateDays(LocalDate startDate, LocalDate endDate) {
+        long daysAmount = DAYS.between(startDate, endDate);
+        if(daysAmount < 0) {
+            throw new IllegalArgumentException();
+        }
+        return daysAmount;
     }
 
     public double carPrice(Car car, LocalDate startDate, LocalDate endDate, double price) {
