@@ -13,6 +13,9 @@ public class Garage {
     private List<Car> carStorage = new ArrayList<>();
 
     public void addToStorage(Car car) {
+        if(car.getVin() == null) {
+            throw new NullPointerException();
+        }
         carStorage.add(car);
     }
 

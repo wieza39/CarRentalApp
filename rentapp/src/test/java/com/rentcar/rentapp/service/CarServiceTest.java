@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CarServiceTest {
-    //jesli auto istnieje, jest wynajety,
+
     private CarService carService;
     private Garage garage = new Garage();
     private RentalStorage rentalStorage = new RentalStorage();
@@ -35,7 +35,7 @@ class CarServiceTest {
 
     Jaka jest cena wynajmu samochodu STANDARD - done
 
-    Co się stanie jeżeli vin będzie nullem - naprawić implementacje zeby test przechodzil
+    Co się stanie jeżeli vin będzie nullem - naprawić implementacje zeby test przechodzil - done
  */
 
     @Test
@@ -73,19 +73,19 @@ class CarServiceTest {
     void checkPremiumPrice() {
         Car car = new Car("testModel", "testBrand", CarType.PREMIUM, "VIN12345");
         LocalDate startDate = LocalDate.of(2022, 1, 1);
-        LocalDate endDate = LocalDate.of(2022, 1, 3);
+        LocalDate endDate = LocalDate.of(2022, 1, 2);
         double basePrice = 200;
 
         double finalPrice = carService.carPrice(car, startDate, endDate, basePrice);
 
-        assertThat(finalPrice).isEqualTo(350);
+        assertThat(finalPrice).isEqualTo(300);
     }
 
     @Test
     void checkStandardPrice() {
         Car car = new Car("testModel", "testBrand", CarType.STANDARD, "VIN12345");
         LocalDate startDate = LocalDate.of(2022, 1, 1);
-        LocalDate endDate = LocalDate.of(2022, 1, 3);
+        LocalDate endDate = LocalDate.of(2022, 1, 2);
         double basePrice = 200;
 
         double finalPrice = carService.carPrice(car, startDate, endDate, basePrice);
@@ -97,18 +97,16 @@ class CarServiceTest {
     void carWithNullVin(){
         Car car = new Car("testModel", "testBrand", CarType.STANDARD, null);
 
-        garage.addToStorage(car);
-
-//        assertThrows(NullPointerException.class, () -> {
-//
-//        });
+        assertThrows(NullPointerException.class, () -> {
+            garage.addToStorage(car);
+        });
     }
 
 
     @Test
     void checkByVinIfCarIsInDataBase() {
         String vinTest = "VIN12345";
-        Car car = new Car("model", null, CarType.PREMIUM, vinTest);
+        Car car = new Car("model", "brand", CarType.PREMIUM, vinTest);
         garage.addToStorage(car);
 
         Car car2 = garage.getCarByVin(vinTest);

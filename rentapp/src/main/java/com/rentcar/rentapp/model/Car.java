@@ -10,7 +10,7 @@ public class Car {
     private String vin;
     private boolean isAvailable;
 
-    public Car(String model, String brand, CarType carType, @NonNull String vin) {
+    public Car(String model, String brand, CarType carType, String vin) {
         this.model = model;
         this.brand = brand;
         this.carType = carType;
